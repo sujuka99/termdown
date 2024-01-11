@@ -1,0 +1,137 @@
+[tool.poetry]
+name = "termdown"
+version = "0.1.0"
+description = "Countdown timer for your terminal"
+authors = ["Torsten Rehn <torsten@rehn.email>", "Ivan Yordanov <i.p.yordanov@proton.me>"]
+license = "GPLv3"
+readme = "README.md"
+repository = "https://github.com/sujuka99/termdown"
+keywords=[
+        "console",
+        "countdown",
+        "curses",
+        "stopwatch",
+        "terminal",
+        "timer",
+]
+classifiers=[
+        "Development Status :: 5 - Production/Stable",
+        "Environment :: Console :: Curses",
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+        "Natural Language :: English",
+        "Operating System :: MacOS :: MacOS X",
+        "Operating System :: POSIX",
+        "Operating System :: Unix",
+        "Programming Language :: Python :: 3",
+        "Topic :: Utilities",
+]
+packages = [
+  { include = "termdown.py" },
+]
+
+[tool.poetry.scripts]
+termdown = "termdown:main"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+click = "^8.1.7"
+pyfiglet = "^1.0.2"
+python-dateutil = "^2.8.2"
+windows-curses = { version = "^2.3.2", markers = "sys_platform == 'Windows'"}
+typer = "^0.9.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.4"
+pre-commit = "^3.6.0"
+ruff = "^0.1.11"
+pyright = "^1.1.345"
+
+[tool.ruff]
+ignore = [
+  # Rules in conflict with `ruff-format` -- START
+  "W191", # Checks for indentation that uses tabs. Spaces are preferred.
+  # "E111", # Checks for indentation with a non-multiple of 4 spaces, add when out of nursery
+  # "E114", # Checks for indentation of comments with a non-multiple of 4 spaces, add when out of nursery
+  # "E117", # Checks for over-indented code, add when out of nursery
+  "E501", # Line too long
+  "D206", # Checks for docstrings that are indented with tabs.
+  "D300", # Checks for docstrings that use '''triple single quotes''' instead of """triple double quotes""".
+  "Q000", # Checks for inline strings that use single quotes.
+  "Q001", # Checks for multiline strings that use single quotes
+  "Q002", # Checks for docstrings that use single quotes.
+  "Q003", # Checks for strings that include escaped quotes.
+  "COM812", # Checks for the absence of trailing commas.
+  "COM819", # Checks for the presence of prohibited trailing commas.
+  "ISC001", # Checks for implicitly concatenated strings on a single line.
+  "ISC002", # Checks for implicitly concatenated strings that span multiple lines.
+  # Rules in conflict with `ruff-format` -- END
+  "B009", # Do not call getattr with a constant attribute value. -- Not always applicable
+  "B010", # Do not call setattr with a constant attribute value. -- Not always applicable
+  "RUF012", # type class attrs with `ClassVar` -- Too strict/trigger-happy
+  "UP007", # Use X | Y for type annotations -- `typer` doesn't support it
+  "PIE804", # Unnecessary `dict` kwargs -- Inconvenient to enforce
+  "RET505", # Unnecessary {branch} after return statement -- Lots of false positives
+  "RET506", # Unnecessary {branch} after raise statement -- Lots of false positives
+  "RET507", # Unnecessary {branch} after continue statement -- Lots of false positives
+  "RET508", # Unnecessary {branch} after break statement -- Lots of false positives
+  "PLR09", # upper bound on number of arguments, functions, etc. -- Inconvenient to enforce
+  "PLR2004", # Magic value used in comparison, consider replacing {value} with a constant variable -- Inconvenient to enforce
+  "PLW2901", # `for` loop variable `{var}` overwritten by assignment target -- Inconvenient to enforce
+  "TRY002", # Create your own exception -- Inconvenient to enforce
+  "TRY003", # Avoid specifying long messages outside the exception class -- Inconvenient to enforce
+]
+select = [
+  "F", # Pyflakes
+  "E", # pycodestyle Errors
+  "W", # pycodestyle Warnings
+  "C90", # mccabe
+  "I", # isort
+  "D", # pydocstyle
+  "UP", # pyupgrade
+  "B", # flake8-bugbear
+  "INP", # flake8-no-pep420
+  "RUF", # Ruff-specific rules
+  "YTT", # flake8-2020
+  "ASYNC", # flake8-async
+  "BLE", # flake8-blind-except
+  "COM", # flake8-commas
+  "C4", # flake8-comprehensions
+  "T10", # flake8-debugger
+  "EM", # flake8-errmsg
+  "FA", # flake8-future-annotations
+  "ISC", # flake8-implicit-str-concat
+  "ICN", # flake8-import-conventions
+  "INP", # flake8-no-pep420
+  "PIE", # flake8-pie
+  "Q", # flake8-quotes
+  "RSE", # flake8-raise
+  "RET", # flake8-return
+  "SLOT", # flake8-slots
+  "SIM", # flake8-simplify
+  "PTH", # flake8-use-pathlib
+  "ERA", # eradicate
+  "PGH", # pygrep-hooks
+  "PL", # Pylint
+  "TRY", # tryceratops
+  "PERF", # Perflint
+  # "FURB", # refurb, add when out of nursery
+  # "LOG", # flake8-logging, add when out of nursery
+]
+output-format = "grouped"
+show-fixes = true
+task-tags = ["TODO", "HACK", "FIXME", "XXX"]
+target-version = "py311"
+
+[tool.ruff.extend-per-file-ignores]
+"tests/*/__init__.py" = ["F401"]
+
+[tool.ruff.lint.pydocstyle]
+# Use Google-style docstrings.
+convention = "google"
+
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["typer.Argument"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
